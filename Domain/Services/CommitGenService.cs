@@ -17,9 +17,7 @@ public class CommitGenService : ICommitGenService
     {
         var changes = _git.GetIndexChanges();
 
-        return await _ollama.GenerateCompletionAsync(
-            "Write only concise commit message using this information: " +
-            changes);
+        return await _ollama.GenerateCompletionAsync(changes);
     }
 
     public void Commit(string message)
