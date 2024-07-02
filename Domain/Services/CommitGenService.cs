@@ -2,32 +2,23 @@ using Domain.Interfaces;
 
 namespace Domain.Services;
 
-public class CommitGenService : ICommitGenService
+public class CommitGenService(IGitService git, IOllamaService ollama) : ICommitGenService
 {
-    private readonly IGitService _git;
-    private readonly IOllamaService _ollama;
-
-    public CommitGenService(IGitService git, IOllamaService ollama)
-    {
-        _git = git;
-        _ollama = ollama;
-    }
-
     public async Task<string> GetMessageAsync()
     {
-        var changes = _git.GetIndexChanges();
+        var changes = git.GetIndexChanges();
 
-        return await _ollama.GenerateCompletionAsync(changes);
+        return await ollama.GenerateCompletionAsync(changes);
     }
 
     public void Commit(string message)
     {
-        _git.MakeCommit(message);
+        git.MakeCommit(message);
     }
 
     public void Dispose()
     {
-        _git.Dispose();
-        _ollama.Dispose();
+        git.Dispose();
+        ollama.Dispose();
     }
 }

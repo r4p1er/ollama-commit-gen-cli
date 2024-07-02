@@ -9,8 +9,8 @@ public class CommitGenBinder : BinderBase<ICommitGenService>
 {
     protected override ICommitGenService GetBoundValue(BindingContext bindingContext)
     {
-        IGitService git = new GitService(Directory.GetCurrentDirectory());
-        IOllamaService ollama = new OllamaService(new HttpClient(), "http://localhost:11434");
+        var git = new GitService(Directory.GetCurrentDirectory());
+        var ollama = new OllamaService(new HttpClient(), "http://localhost:11434");
 
         return new CommitGenService(git, ollama);
     }

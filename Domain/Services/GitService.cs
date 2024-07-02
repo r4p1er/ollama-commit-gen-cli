@@ -4,14 +4,9 @@ using LibGit2Sharp;
 
 namespace Domain.Services;
 
-public class GitService : IGitService
+public class GitService(string path) : IGitService
 {
-    private readonly IRepository _repo;
-
-    public GitService(string path)
-    {
-        _repo = new Repository(path);
-    }
+    private readonly IRepository _repo = new Repository(path);
 
     public string GetIndexChanges()
     {
