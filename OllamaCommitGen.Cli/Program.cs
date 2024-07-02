@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
-using CLI.Binders;
+using OllamaCommitGen.Cli.Binders;
 
-namespace CLI;
+namespace OllamaCommitGen.Cli;
 
 class Program
 {

@@ -1,8 +1,8 @@
 using System.Text;
-using Domain.Interfaces;
 using LibGit2Sharp;
+using OllamaCommitGen.Domain.Interfaces;
 
-namespace Domain.Services;
+namespace OllamaCommitGen.Domain.Services;
 
 public class GitService(string path) : IGitService
 {

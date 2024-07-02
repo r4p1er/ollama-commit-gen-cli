@@ -1,8 +1,8 @@
 using System.Net.Http.Json;
-using Domain.Interfaces;
-using Infrastructure.DataObjects;
+using OllamaCommitGen.Domain.Interfaces;
+using OllamaCommitGen.Infrastructure.DataObjects;
 
-namespace Infrastructure.Services;
+namespace OllamaCommitGen.Infrastructure.Services;
 
 public class OllamaService(HttpClient http, string uri) : IOllamaService
 {

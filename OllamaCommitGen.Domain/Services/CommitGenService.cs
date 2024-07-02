@@ -1,6 +1,6 @@
-using Domain.Interfaces;
+using OllamaCommitGen.Domain.Interfaces;
 
-namespace Domain.Services;
+namespace OllamaCommitGen.Domain.Services;
 
 public class CommitGenService(IGitService git, IOllamaService ollama) : ICommitGenService
 {

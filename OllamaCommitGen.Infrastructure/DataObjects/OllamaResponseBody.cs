@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Infrastructure.DataObjects;
+namespace OllamaCommitGen.Infrastructure.DataObjects;
 
 public class OllamaResponseBody
 {

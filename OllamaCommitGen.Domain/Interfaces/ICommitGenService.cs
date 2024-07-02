@@ -1,4 +1,4 @@
-namespace Domain.Interfaces;
+namespace OllamaCommitGen.Domain.Interfaces;
 
 public interface ICommitGenService : IDisposable
 {

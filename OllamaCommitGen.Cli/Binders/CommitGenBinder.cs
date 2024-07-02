@@ -1,9 +1,9 @@
 using System.CommandLine.Binding;
-using Domain.Interfaces;
-using Domain.Services;
-using Infrastructure.Services;
+using OllamaCommitGen.Domain.Interfaces;
+using OllamaCommitGen.Domain.Services;
+using OllamaCommitGen.Infrastructure.Services;
 
-namespace CLI.Binders;
+namespace OllamaCommitGen.Cli.Binders;
 
 public class CommitGenBinder : BinderBase<ICommitGenService>
 {

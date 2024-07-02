@@ -1,4 +1,4 @@
-namespace Infrastructure.DataObjects;
+namespace OllamaCommitGen.Infrastructure.DataObjects;
 
 public class OllamaRequestBody
 {
