@@ -2,7 +2,7 @@ using System.Text;
 using LibGit2Sharp;
 using OllamaCommitGen.Domain.Interfaces;
 
-namespace OllamaCommitGen.Domain.Services;
+namespace OllamaCommitGen.Infrastructure.Services;
 
 public class GitService(string path) : IGitService
 {
