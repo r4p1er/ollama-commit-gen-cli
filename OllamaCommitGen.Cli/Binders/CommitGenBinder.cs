@@ -11,12 +11,13 @@ public class CommitGenBinder(Option<string> originOption, Option<string> modelOp
     protected override ICommitGenService GetBoundValue(BindingContext bindingContext)
     {
         var git = new GitService(Directory.GetCurrentDirectory());
-        var ollama = new OllamaService(
-            new HttpClient(),
-            bindingContext.ParseResult.GetValueForOption(originOption)!
-        );
 
-        ollama.RequestBody.Model = bindingContext.ParseResult.GetValueForOption(modelOption)!;
+        string uri = bindingContext.ParseResult.GetValueForOption(originOption)!;
+        string model = bindingContext.ParseResult.GetValueForOption(modelOption)!;
+        
+        var ollama = new OllamaService(new HttpClient(), uri);
+
+        ollama.RequestBody.Model = model;
 
         return new CommitGenService(git, ollama);
     }
