@@ -12,8 +12,8 @@ public class CommitGenBinder(Option<string> originOption, Option<string> modelOp
     {
         var git = new GitService(Directory.GetCurrentDirectory());
 
-        string uri = bindingContext.ParseResult.GetValueForOption(originOption)!;
-        string model = bindingContext.ParseResult.GetValueForOption(modelOption)!;
+        var uri = bindingContext.ParseResult.GetValueForOption(originOption)!;
+        var model = bindingContext.ParseResult.GetValueForOption(modelOption)!;
         
         var ollama = new OllamaService(new HttpClient(), uri);
 
