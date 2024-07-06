@@ -6,6 +6,7 @@ public static class ConsoleWrapper
 {
     public static string WriteEditableLine(string text)
     {
+        Console.Write("\x1B[5 q");
         var initialPosition = Console.GetCursorPosition().Left;
         Console.Write(text);
         var sb = new StringBuilder(text);
@@ -52,6 +53,7 @@ public static class ConsoleWrapper
                     break;
             }
 
+        Console.Write("\x1B[0 q");
         Console.Write(Environment.NewLine);
 
         return sb.ToString();
