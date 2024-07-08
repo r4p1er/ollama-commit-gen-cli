@@ -1,5 +1,8 @@
 ﻿using System.CommandLine;
+using System.CommandLine.Builder;
+using System.CommandLine.Parsing;
 using OllamaCommitGen.Cli.Binders;
+using OllamaCommitGen.Cli.Extensions;
 using OllamaCommitGen.Cli.Utils;
 
 namespace OllamaCommitGen.Cli;
@@ -53,6 +56,13 @@ class Program
             commitGenService.Dispose();
         }, new CommitGenBinder(originOption, modelOption), noPromptOption);
 
-        await rootCommand.InvokeAsync(args);
+        var commandLineBuilder = new CommandLineBuilder(rootCommand);
+        
+        commandLineBuilder.UseErrorHandling();
+        commandLineBuilder.UseDefaults();
+
+        var parser = commandLineBuilder.Build();
+
+        await parser.InvokeAsync(args);
     }
 }

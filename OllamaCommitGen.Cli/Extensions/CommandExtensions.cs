@@ -1,6 +1,6 @@
 using System.CommandLine;
 
-namespace OllamaCommitGen.Cli;
+namespace OllamaCommitGen.Cli.Extensions;
 
 public static class CommandExtensions
 {

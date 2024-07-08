@@ -28,7 +28,7 @@ public class GitService(string path) : IGitService
     {
         var signature = _repo.Config.BuildSignature(DateTimeOffset.Now);
 
-        if (signature == null) throw new InvalidOperationException("Current user is not defined in the repo config");
+        if (signature == null) throw new LibGit2SharpException("Current user is not defined in the repo config");
 
         return _repo.Commit(message, signature, signature);
     }

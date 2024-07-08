@@ -8,6 +8,8 @@ public class CommitGenService(IGitService git, IOllamaService ollama) : ICommitG
     {
         var changes = git.GetIndexChanges();
 
+        if (string.IsNullOrWhiteSpace(changes)) throw new ArgumentException("There is no any staged changes");
+
         return await ollama.GenerateCompletionAsync(changes);
     }
 
