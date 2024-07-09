@@ -36,6 +36,14 @@ class Program
             arity: ArgumentArity.ZeroOrOne,
             defaultValue: false
         );
+
+        var langOption = rootCommand.AddOption<string>(
+            name: "--lang",
+            description: "Specifies a language (ISO-639-3) to be used for generating commit message",
+            alias: "-l",
+            arity: ArgumentArity.ExactlyOne,
+            defaultValue: "eng"
+        );
         
         rootCommand.SetHandler(async (commitGenService, noPrompt) =>
         {
@@ -54,7 +62,7 @@ class Program
             }
             
             commitGenService.Dispose();
-        }, new CommitGenBinder(originOption, modelOption), noPromptOption);
+        }, new CommitGenBinder(originOption, modelOption, langOption), noPromptOption);
 
         var commandLineBuilder = new CommandLineBuilder(rootCommand);
         
