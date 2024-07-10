@@ -32,7 +32,7 @@ class Program
         var noPromptOption = rootCommand.AddOption<bool>(
             name: "--no-prompt",
             description: "Disables the interactive prompt for editing the generated commit message",
-            alias: "-n",
+            alias: "-p",
             arity: ArgumentArity.ZeroOrOne,
             defaultValue: false
         );
@@ -52,11 +52,28 @@ class Program
             arity: ArgumentArity.ExactlyOne,
             defaultValue: "5m"
         );
-        
+
+        var noStreamOption = rootCommand.AddOption<bool>(
+            name: "--no-stream",
+            description: "Disables real time generating the commit message",
+            alias: "-s",
+            arity: ArgumentArity.ZeroOrOne,
+            defaultValue: false
+        );
+
         rootCommand.SetHandler(async (commitGenService, noPrompt) =>
         {
-            string message = await commitGenService.GetMessageAsync();
             Console.Write("Generated message: ");
+            var startPos = Console.GetCursorPosition();
+
+            commitGenService.AddStreamResponseArrivedHandler((sender, eventArgs) =>
+            {
+                Console.Write(eventArgs.Response);
+            });
+            
+            string message = await commitGenService.GetMessageAsync();
+            var endPos = Console.GetCursorPosition();
+            ConsoleWrapper.ClearFromTo(startPos, endPos);
             
             if (noPrompt)
             {
@@ -70,7 +87,7 @@ class Program
             }
             
             commitGenService.Dispose();
-        }, new CommitGenBinder(originOption, modelOption, langOption, keepaliveOption), noPromptOption);
+        }, new CommitGenBinder(originOption, modelOption, langOption, keepaliveOption, noStreamOption), noPromptOption);
 
         var commandLineBuilder = new CommandLineBuilder(rootCommand);
         
