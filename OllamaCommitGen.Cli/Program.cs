@@ -44,6 +44,14 @@ class Program
             arity: ArgumentArity.ExactlyOne,
             defaultValue: "eng"
         );
+
+        var keepaliveOption = rootCommand.AddOption<string>(
+            name: "--keepalive",
+            description: "Specifies how long the model will stay loaded into memory following the request",
+            alias: "-k",
+            arity: ArgumentArity.ExactlyOne,
+            defaultValue: "5m"
+        );
         
         rootCommand.SetHandler(async (commitGenService, noPrompt) =>
         {
@@ -62,7 +70,7 @@ class Program
             }
             
             commitGenService.Dispose();
-        }, new CommitGenBinder(originOption, modelOption, langOption), noPromptOption);
+        }, new CommitGenBinder(originOption, modelOption, langOption, keepaliveOption), noPromptOption);
 
         var commandLineBuilder = new CommandLineBuilder(rootCommand);
         
