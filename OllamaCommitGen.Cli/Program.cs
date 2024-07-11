@@ -12,22 +12,6 @@ class Program
     static async Task Main(string[] args)
     {
         var rootCommand = new RootCommand("Generates commit message via Ollama AI");
-        
-        var originOption = rootCommand.AddOption<string>(
-            name: "--origin",
-            description: "Specifies a custom remote Ollama host",
-            alias: "-o",
-            arity: ArgumentArity.ExactlyOne,
-            defaultValue: "http://localhost:11434"
-        );
-
-        var modelOption = rootCommand.AddOption<string>(
-            name: "--model",
-            description: "Specifies an Ollama model to be used",
-            alias: "-m",
-            arity: ArgumentArity.ExactlyOne,
-            defaultValue: "llama3"
-        );
 
         var noPromptOption = rootCommand.AddOption<bool>(
             name: "--no-prompt",
@@ -37,29 +21,8 @@ class Program
             defaultValue: false
         );
 
-        var langOption = rootCommand.AddOption<string>(
-            name: "--lang",
-            description: "Specifies a language (ISO-639-3) to be used for generating commit message",
-            alias: "-l",
-            arity: ArgumentArity.ExactlyOne,
-            defaultValue: "eng"
-        );
-
-        var keepaliveOption = rootCommand.AddOption<string>(
-            name: "--keepalive",
-            description: "Specifies how long the model will stay loaded into memory following the request",
-            alias: "-k",
-            arity: ArgumentArity.ExactlyOne,
-            defaultValue: "5m"
-        );
-
-        var noStreamOption = rootCommand.AddOption<bool>(
-            name: "--no-stream",
-            description: "Disables real time generating the commit message",
-            alias: "-s",
-            arity: ArgumentArity.ZeroOrOne,
-            defaultValue: false
-        );
+        var primaryOptions = rootCommand.AddPrimaryOptions();
+        var modelOptions = rootCommand.AddModelOptions();
 
         rootCommand.SetHandler(async (commitGenService, noPrompt) =>
         {
@@ -84,7 +47,7 @@ class Program
             }
             
             commitGenService.Dispose();
-        }, new CommitGenBinder(originOption, modelOption, langOption, keepaliveOption, noStreamOption), noPromptOption);
+        }, new CommitGenBinder(primaryOptions, modelOptions), noPromptOption);
 
         var commandLineBuilder = new CommandLineBuilder(rootCommand);
         
