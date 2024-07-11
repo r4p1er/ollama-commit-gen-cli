@@ -1,6 +1,10 @@
+using OllamaSharp.Models;
+
 namespace OllamaCommitGen.Domain.Interfaces;
 
-public interface IOllamaService : IDisposable
+public interface IOllamaService
 {
     Task<string> GenerateCompletionAsync(string prompt);
+
+    void SetStreamResponseHandler(Action<GenerateCompletionResponseStream?> handler);
 }

@@ -111,7 +111,7 @@ public static class ConsoleWrapper
         return sb.ToString();
     }
 
-    private static void ClearFromTo((int left, int top) pos1, (int left, int top) pos2)
+    public static void ClearFromTo((int left, int top) pos1, (int left, int top) pos2)
     {
         Console.SetCursorPosition(pos2.left, pos2.top);
 

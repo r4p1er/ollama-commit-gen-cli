@@ -11,7 +11,8 @@ public class CommitGenBinder(
     Option<string> originOption,
     Option<string> modelOption,
     Option<string> langOption,
-    Option<string> keepaliveOption)
+    Option<string> keepaliveOption,
+    Option<bool> noStreamOption)
     : BinderBase<ICommitGenService>
 {
     protected override ICommitGenService GetBoundValue(BindingContext bindingContext)
@@ -23,15 +24,17 @@ public class CommitGenBinder(
         var langStr = bindingContext.ParseResult.GetValueForOption(langOption)!;
         var lang = Language.FromPart3(langStr);
         var keepalive = bindingContext.ParseResult.GetValueForOption(keepaliveOption)!;
+        var noStream = bindingContext.ParseResult.GetValueForOption(noStreamOption)!;
 
         if (lang == null) throw new ArgumentException("Provided lang is not an ISO-639-3 valid code");
 
-        var ollama = new OllamaService(new HttpClient(), uri);
+        var ollama = new OllamaService(uri);
 
-        ollama.RequestBody.Model = model;
-        ollama.RequestBody.System +=
+        ollama.Request.Model = model;
+        ollama.Request.System +=
             $"The language of your response must correspond this ISO-639-3 code: {lang.Part3}.";
-        ollama.RequestBody.KeepAlive = keepalive;
+        ollama.Request.KeepAlive = keepalive;
+        ollama.Request.Stream = !noStream;
 
         return new CommitGenService(git, ollama);
     }

@@ -1,29 +1,52 @@
-using System.Net.Http.Json;
-using System.Text.Json;
+using System.Text;
 using OllamaCommitGen.Domain.Interfaces;
-using OllamaCommitGen.Infrastructure.DataObjects;
+using OllamaSharp;
+using OllamaSharp.Models;
 
 namespace OllamaCommitGen.Infrastructure.Services;
 
-public class OllamaService(HttpClient http, string uri) : IOllamaService
+public class OllamaService : IOllamaService
 {
-    public OllamaRequestBody RequestBody { get; } = new OllamaRequestBody();
+    private readonly IOllamaApiClient _client;
+    private Action<GenerateCompletionResponseStream?>? _handler;
+
+    public GenerateCompletionRequest Request { get; } = new();
+    
+    public OllamaService(string uri)
+    {
+        _client = new OllamaApiClient(uri);
+        Request.System =
+            "You are to act as the author of a commit message in git. Your mission is to create clean and comprehensive commit messages and explain WHAT were the changes and mainly WHY the changes were done. I'll send you an output of 'git diff --staged' command, and you are to convert it into a commit message. Use the present tense. Lines must not be longer than 74 characters. Your response must consist of only message for the commit.";
+        Request.Model = "llama3";
+        Request.Stream = false;
+        Request.KeepAlive = "5m";
+    }
     
     public async Task<string> GenerateCompletionAsync(string prompt)
     {
-        RequestBody.Prompt = prompt;
-        
-        var response = await http.PostAsync($"{uri}/api/generate", JsonContent.Create(RequestBody));
-        response.EnsureSuccessStatusCode();
-        var res = await response.Content.ReadFromJsonAsync<OllamaResponseBody>();
-        
-        if (res == null) throw new ArgumentNullException(nameof(OllamaResponseBody));
+        Request.Prompt = prompt;
 
-        return res.Response;
+        var result = new StringBuilder();
+
+        if (Request.Stream)
+        {
+            await foreach (var stream in _client.StreamCompletion(Request))
+            {
+                result.Append(stream?.Response);
+                _handler?.Invoke(stream);
+            }
+        }
+        else
+        {
+            var ctx = await _client.GetCompletion(Request);
+            result.Append(ctx.Response);
+        }
+
+        return result.ToString();
     }
 
-    public void Dispose()
+    public void SetStreamResponseHandler(Action<GenerateCompletionResponseStream?> handler)
     {
-        http.Dispose();
+        _handler = handler;
     }
 }
