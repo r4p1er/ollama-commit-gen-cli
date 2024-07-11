@@ -1,4 +1,4 @@
-using OllamaCommitGen.Domain.DataObjects;
+using OllamaSharp.Models;
 
 namespace OllamaCommitGen.Domain.Interfaces;
 
@@ -8,5 +8,5 @@ public interface ICommitGenService : IDisposable
     
     void Commit(string message);
 
-    void AddStreamResponseArrivedHandler(EventHandler<StreamResponseArrivedArgs> handler);
+    void SetStreamResponseHandler(Action<GenerateCompletionResponseStream?> handler);
 }

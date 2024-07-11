@@ -1,10 +1,10 @@
-using OllamaCommitGen.Domain.DataObjects;
+using OllamaSharp.Models;
 
 namespace OllamaCommitGen.Domain.Interfaces;
 
-public interface IOllamaService : IDisposable
+public interface IOllamaService
 {
     Task<string> GenerateCompletionAsync(string prompt);
-    
-    event EventHandler<StreamResponseArrivedArgs>? StreamResponseArrived;
+
+    void SetStreamResponseHandler(Action<GenerateCompletionResponseStream?> handler);
 }

@@ -1,5 +1,5 @@
-using OllamaCommitGen.Domain.DataObjects;
 using OllamaCommitGen.Domain.Interfaces;
+using OllamaSharp.Models;
 
 namespace OllamaCommitGen.Domain.Services;
 
@@ -19,14 +19,13 @@ public class CommitGenService(IGitService git, IOllamaService ollama) : ICommitG
         git.MakeCommit(message);
     }
 
-    public void AddStreamResponseArrivedHandler(EventHandler<StreamResponseArrivedArgs> handler)
+    public void SetStreamResponseHandler(Action<GenerateCompletionResponseStream?> handler)
     {
-        ollama.StreamResponseArrived += handler;
+        ollama.SetStreamResponseHandler(handler);
     }
 
     public void Dispose()
     {
         git.Dispose();
-        ollama.Dispose();
     }
 }

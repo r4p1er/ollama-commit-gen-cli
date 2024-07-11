@@ -66,10 +66,7 @@ class Program
             Console.Write("Generated message: ");
             var startPos = Console.GetCursorPosition();
 
-            commitGenService.AddStreamResponseArrivedHandler((sender, eventArgs) =>
-            {
-                Console.Write(eventArgs.Response);
-            });
+            commitGenService.SetStreamResponseHandler(stream => Console.Write(stream?.Response));
             
             string message = await commitGenService.GetMessageAsync();
             var endPos = Console.GetCursorPosition();
