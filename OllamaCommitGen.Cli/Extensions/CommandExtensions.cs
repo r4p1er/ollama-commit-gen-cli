@@ -86,7 +86,7 @@ public static class CommandExtensions
         );
         
         var miroStatEtaOption = command.AddOption<float>(
-            name: "--mirostat_eta",
+            name: "--mirostat-eta",
             description: "Influences how quickly the algorithm responds to feedback from the generated text. A lower learning rate will result in slower adjustments, while a higher learning rate will make the algorithm more responsive",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
@@ -94,7 +94,7 @@ public static class CommandExtensions
         );
         
         var miroStatTauOption = command.AddOption<float>(
-            name: "--mirostat_tau",
+            name: "--mirostat-tau",
             description: "Controls the balance between coherence and diversity of the output. A lower value will result in more focused and coherent text",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
@@ -102,7 +102,7 @@ public static class CommandExtensions
         );
         
         var numCtxOption = command.AddOption<int>(
-            name: "--num_ctx",
+            name: "--num-ctx",
             description: "Sets the size of the context window used to generate the next token",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
@@ -110,7 +110,7 @@ public static class CommandExtensions
         );
         
         var repeatLastNOption = command.AddOption<int>(
-            name: "--repeat_last_n",
+            name: "--repeat-last-n",
             description: "Sets how far back for the model to look back to prevent repetition",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
@@ -118,7 +118,7 @@ public static class CommandExtensions
         );
         
         var repeatPenaltyOption = command.AddOption<float>(
-            name: "--repeat_penalty",
+            name: "--repeat-penalty",
             description: "Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalize repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
@@ -150,7 +150,7 @@ public static class CommandExtensions
         );
         
         var tfsZOption = command.AddOption<float>(
-            name: "--tfs_z",
+            name: "--tfs-z",
             description: "Tail free sampling is used to reduce the impact of less probable tokens from the output. A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
@@ -158,7 +158,7 @@ public static class CommandExtensions
         );
         
         var numPredictOption = command.AddOption<int>(
-            name: "--num_predict",
+            name: "--num-predict",
             description: "Maximum number of tokens to predict when generating text",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
@@ -166,7 +166,7 @@ public static class CommandExtensions
         );
         
         var topKOption = command.AddOption<int>(
-            name: "--top_k",
+            name: "--top-k",
             description: "Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
@@ -174,7 +174,7 @@ public static class CommandExtensions
         );
         
         var topPOption = command.AddOption<float>(
-            name: "--top_p",
+            name: "--top-p",
             description: "Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text",
             alias: null,
             arity: ArgumentArity.ExactlyOne,
