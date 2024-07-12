@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OllamaCommitGen.Infrastruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OllamaCommitGen.Cli", "OllamaCommitGen.Cli\OllamaCommitGen.Cli.csproj", "{9FA13DA3-DEBA-439C-BBE3-A91396BD02F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OllamaCommitGen.OllamaSharp", "OllamaCommitGen.OllamaSharp\OllamaCommitGen.OllamaSharp.csproj", "{D14570C9-9F93-4314-A22B-CDDDF5BC815E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{9FA13DA3-DEBA-439C-BBE3-A91396BD02F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FA13DA3-DEBA-439C-BBE3-A91396BD02F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FA13DA3-DEBA-439C-BBE3-A91396BD02F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D14570C9-9F93-4314-A22B-CDDDF5BC815E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D14570C9-9F93-4314-A22B-CDDDF5BC815E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D14570C9-9F93-4314-A22B-CDDDF5BC815E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D14570C9-9F93-4314-A22B-CDDDF5BC815E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

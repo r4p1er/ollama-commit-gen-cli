@@ -1,5 +1,5 @@
 using OllamaCommitGen.Domain.Interfaces;
-using OllamaSharp.Models;
+using OllamaCommitGen.OllamaSharp.Models;
 
 namespace OllamaCommitGen.Domain.Services;
 

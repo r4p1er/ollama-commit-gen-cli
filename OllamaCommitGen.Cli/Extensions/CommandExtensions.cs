@@ -141,12 +141,12 @@ public static class CommandExtensions
             defaultValue: 0
         );
         
-        var stopOption = command.AddOption<string?>(
+        var stopOption = command.AddOption<List<string>>(
             name: "--stop",
             description: "Sets the stop sequences to use. When this pattern is encountered the LLM will stop generating text and return",
             alias: null,
-            arity: ArgumentArity.ExactlyOne,
-            defaultValue: null
+            arity: ArgumentArity.OneOrMore,
+            defaultValue: new List<string>()
         );
         
         var tfsZOption = command.AddOption<float>(

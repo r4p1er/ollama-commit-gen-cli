@@ -1,7 +1,7 @@
 using System.Text;
 using OllamaCommitGen.Domain.Interfaces;
-using OllamaSharp;
-using OllamaSharp.Models;
+using OllamaCommitGen.OllamaSharp;
+using OllamaCommitGen.OllamaSharp.Models;
 
 namespace OllamaCommitGen.Infrastructure.Services;
 

@@ -4,7 +4,7 @@ using OllamaCommitGen.Cli.Models;
 using OllamaCommitGen.Domain.Interfaces;
 using OllamaCommitGen.Domain.Services;
 using OllamaCommitGen.Infrastructure.Services;
-using OllamaSharp.Models;
+using OllamaCommitGen.OllamaSharp.Models;
 
 namespace OllamaCommitGen.Cli.Binders;
 
@@ -39,7 +39,7 @@ public class CommitGenBinder(PrimaryOptions primaryOptions, ModelOptions modelOp
         var repeatPenalty = bindingContext.ParseResult.GetValueForOption(modelOptions.RepeatPenaltyOption)!;
         var temperature = bindingContext.ParseResult.GetValueForOption(modelOptions.TemperatureOption)!;
         var seed = bindingContext.ParseResult.GetValueForOption(modelOptions.SeedOption)!;
-        var stop = bindingContext.ParseResult.GetValueForOption(modelOptions.StopOption);
+        var stop = bindingContext.ParseResult.GetValueForOption(modelOptions.StopOption)!;
         var tfsZ = bindingContext.ParseResult.GetValueForOption(modelOptions.TfsZOption)!;
         var numPredict = bindingContext.ParseResult.GetValueForOption(modelOptions.NumPredictOption)!;
         var topK = bindingContext.ParseResult.GetValueForOption(modelOptions.TopKOption)!;
@@ -55,7 +55,7 @@ public class CommitGenBinder(PrimaryOptions primaryOptions, ModelOptions modelOp
             RepeatPenalty = repeatPenalty,
             Temperature = temperature,
             Seed = seed,
-            Stop = stop,
+            Stop = stop == null || stop.Count == 0 ? null : string.Join("|", stop),
             TfsZ = tfsZ,
             NumPredict = numPredict,
             TopK = topK,
