@@ -4,9 +4,18 @@ using OllamaCommitGen.Domain.Interfaces;
 
 namespace OllamaCommitGen.Infrastructure.Services;
 
-public class GitService(string path) : IGitService
+public class GitService : IGitService
 {
-    private readonly IRepository _repo = new Repository(path);
+    private readonly IRepository _repo;
+
+    public GitService(string path)
+    {
+        var repoPath = Repository.Discover(path);
+
+        if (repoPath == null) throw new LibGit2SharpException("Repository not found");
+
+        _repo = new Repository(repoPath);
+    }
 
     public string GetIndexChanges()
     {
