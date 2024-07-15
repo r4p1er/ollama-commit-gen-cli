@@ -20,7 +20,7 @@ public class ModelOptions
     
     public Option<int> SeedOption { get; set; }
     
-    public Option<List<string>> StopOption { get; set; }
+    public Option<string[]?> StopOption { get; set; }
     
     public Option<float> TfsZOption { get; set; }
     
