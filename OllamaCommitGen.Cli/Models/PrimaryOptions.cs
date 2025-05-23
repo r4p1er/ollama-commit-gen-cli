@@ -15,4 +15,8 @@ public class PrimaryOptions
     public Option<bool> NoStreamOption { get; set; }
 
     public Option<string> ConfigOption { get; set; }
+
+    public Option<string> ExampleOption { get; set; }
+
+    public Option<string> ExampleDescriptionOption { get; set; }
 }

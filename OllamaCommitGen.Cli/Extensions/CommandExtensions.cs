@@ -73,6 +73,22 @@ public static class CommandExtensions
             defaultValue: null
         );
 
+        var exampleOption = command.AddOption<string>(
+            name: "--example",
+            description: "Specifies an example commit message that the model will look at",
+            alias: "-e",
+            arity: ArgumentArity.ExactlyOne,
+            defaultValue: null
+        );
+
+        var exampleDescriptionOption = command.AddOption<string>(
+            name: "--example-description",
+            description: "Provides explanations for the example commit message so that the model can better understand what is required of it",
+            alias: "-d",
+            arity: ArgumentArity.ExactlyOne,
+            defaultValue: null
+        );
+
         return new PrimaryOptions()
         {
             OriginOption = originOption,
@@ -80,7 +96,9 @@ public static class CommandExtensions
             LangOption = langOption,
             KeepAliveOption = keepaliveOption,
             NoStreamOption = noStreamOption,
-            ConfigOption = configOption
+            ConfigOption = configOption,
+            ExampleOption = exampleOption,
+            ExampleDescriptionOption = exampleDescriptionOption
         };
     }
 
