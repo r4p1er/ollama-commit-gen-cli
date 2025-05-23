@@ -1,4 +1,4 @@
-using System.CommandLine;
+﻿using System.CommandLine;
 using System.CommandLine.Binding;
 using Iso639;
 using OllamaCommitGen.Cli.Models;
@@ -25,17 +25,22 @@ public class CommitGenBinder(PrimaryOptions primaryOptions, ModelOptions modelOp
         var langStr = ResolveOptionValue(bindingContext, primaryOptions.LangOption, appConfig?.Lang);
         var keepalive = ResolveOptionValue(bindingContext, primaryOptions.KeepAliveOption, appConfig?.KeepAlive);
         var noStream = ResolveOptionValue(bindingContext, primaryOptions.NoStreamOption, appConfig?.NoStream);
+        var example = ResolveOptionValue(bindingContext, primaryOptions.ExampleOption, appConfig?.Example);
+        var exampleDescription = ResolveOptionValue(bindingContext, primaryOptions.ExampleDescriptionOption, appConfig?.ExampleDescription);
 
         var lang = Language.FromPart3(langStr);
         if (lang == null) throw new ArgumentException("Provided lang is not an ISO-639-3 valid code");
+        if (string.IsNullOrWhiteSpace(example) && !string.IsNullOrWhiteSpace(exampleDescription)) throw new ArgumentException("Option --example-description cannot be used alone without option --example");
 
         var ollama = new OllamaService(uri);
 
         ollama.Request.Model = model;
         ollama.Request.System +=
-            $"The language of your response must correspond this ISO-639-3 code: {lang.Part3}.";
+            $" The language of your response must correspond this ISO-639-3 code: {lang.Part3}.";
         ollama.Request.KeepAlive = keepalive;
         ollama.Request.Stream = !noStream;
+        if (example != null) ollama.Request.System += $" The following information should be considered a priority. Here is a sample commit message: \"{example}\". The commit message you should generate should be as close as possible to this sample, both in style and structure.";
+        if (exampleDescription != null) ollama.Request.System += $" Here is an explanation of the sample commit message to give you a better idea of ​​what is required of you: \"{exampleDescription}\".";
 
         var miroStat = ResolveOptionValue(bindingContext, modelOptions.MiroStatOption, appConfig?.MiroStat);
         var miroStatEta = ResolveOptionValue(bindingContext, modelOptions.MiroStatEtaOption, appConfig?.MiroStatEta);

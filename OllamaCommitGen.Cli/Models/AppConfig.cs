@@ -12,6 +12,10 @@
 
         public bool? NoStream { get; set; }
 
+        public string? Example { get; set; }
+
+        public string? ExampleDescription { get; set; }
+
         public int? MiroStat { get; set; }
 
         public float? MiroStatEta { get; set; }
