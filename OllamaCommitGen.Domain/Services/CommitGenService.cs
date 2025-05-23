@@ -1,4 +1,4 @@
-using OllamaCommitGen.Domain.Interfaces;
+using OllamaCommitGen.Domain.Abstractions;
 using OllamaSharp.Models;
 
 namespace OllamaCommitGen.Domain.Services;

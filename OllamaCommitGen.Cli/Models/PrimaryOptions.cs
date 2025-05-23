@@ -13,4 +13,6 @@ public class PrimaryOptions
     public Option<string> KeepAliveOption { get; set; }
     
     public Option<bool> NoStreamOption { get; set; }
+
+    public Option<string> ConfigOption { get; set; }
 }

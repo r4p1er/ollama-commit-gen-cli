@@ -1,7 +1,9 @@
+using System.CommandLine;
 using System.CommandLine.Binding;
 using Iso639;
 using OllamaCommitGen.Cli.Models;
-using OllamaCommitGen.Domain.Interfaces;
+using OllamaCommitGen.Cli.Utils;
+using OllamaCommitGen.Domain.Abstractions;
 using OllamaCommitGen.Domain.Services;
 using OllamaCommitGen.Infrastructure.Services;
 using OllamaSharp.Models;
@@ -14,13 +16,17 @@ public class CommitGenBinder(PrimaryOptions primaryOptions, ModelOptions modelOp
     {
         var git = new GitService(Directory.GetCurrentDirectory());
 
-        var uri = bindingContext.ParseResult.GetValueForOption(primaryOptions.OriginOption)!;
-        var model = bindingContext.ParseResult.GetValueForOption(primaryOptions.ModelOption)!;
-        var langStr = bindingContext.ParseResult.GetValueForOption(primaryOptions.LangOption)!;
-        var lang = Language.FromPart3(langStr);
-        var keepalive = bindingContext.ParseResult.GetValueForOption(primaryOptions.KeepAliveOption)!;
-        var noStream = bindingContext.ParseResult.GetValueForOption(primaryOptions.NoStreamOption)!;
+        var configPath = bindingContext.ParseResult.GetValueForOption(primaryOptions.ConfigOption);
+        AppConfig? appConfig = null;
+        if (configPath != null) appConfig = ConfigLoader.LoadAppConfig(configPath);
 
+        var uri = ResolveOptionValue(bindingContext, primaryOptions.OriginOption, appConfig?.Origin);
+        var model = ResolveOptionValue(bindingContext, primaryOptions.ModelOption, appConfig?.Model);
+        var langStr = ResolveOptionValue(bindingContext, primaryOptions.LangOption, appConfig?.Lang);
+        var keepalive = ResolveOptionValue(bindingContext, primaryOptions.KeepAliveOption, appConfig?.KeepAlive);
+        var noStream = ResolveOptionValue(bindingContext, primaryOptions.NoStreamOption, appConfig?.NoStream);
+
+        var lang = Language.FromPart3(langStr);
         if (lang == null) throw new ArgumentException("Provided lang is not an ISO-639-3 valid code");
 
         var ollama = new OllamaService(uri);
@@ -31,19 +37,21 @@ public class CommitGenBinder(PrimaryOptions primaryOptions, ModelOptions modelOp
         ollama.Request.KeepAlive = keepalive;
         ollama.Request.Stream = !noStream;
 
-        var miroStat = bindingContext.ParseResult.GetValueForOption(modelOptions.MiroStatOption)!;
-        var miroStatEta = bindingContext.ParseResult.GetValueForOption(modelOptions.MiroStatEtaOption)!;
-        var miroStatTau = bindingContext.ParseResult.GetValueForOption(modelOptions.MiroStatTauOption)!;
-        var numCtx = bindingContext.ParseResult.GetValueForOption(modelOptions.NumCtxOption)!;
-        var repeatLastN = bindingContext.ParseResult.GetValueForOption(modelOptions.RepeatLastNOption)!;
-        var repeatPenalty = bindingContext.ParseResult.GetValueForOption(modelOptions.RepeatPenaltyOption)!;
-        var temperature = bindingContext.ParseResult.GetValueForOption(modelOptions.TemperatureOption)!;
-        var seed = bindingContext.ParseResult.GetValueForOption(modelOptions.SeedOption)!;
-        var stop = bindingContext.ParseResult.GetValueForOption(modelOptions.StopOption);
-        var tfsZ = bindingContext.ParseResult.GetValueForOption(modelOptions.TfsZOption)!;
-        var numPredict = bindingContext.ParseResult.GetValueForOption(modelOptions.NumPredictOption)!;
-        var topK = bindingContext.ParseResult.GetValueForOption(modelOptions.TopKOption)!;
-        var topP = bindingContext.ParseResult.GetValueForOption(modelOptions.TopPOption)!;
+        var miroStat = ResolveOptionValue(bindingContext, modelOptions.MiroStatOption, appConfig?.MiroStat);
+        var miroStatEta = ResolveOptionValue(bindingContext, modelOptions.MiroStatEtaOption, appConfig?.MiroStatEta);
+        var miroStatTau = ResolveOptionValue(bindingContext, modelOptions.MiroStatTauOption, appConfig?.MiroStatTau);
+        var numCtx = ResolveOptionValue(bindingContext, modelOptions.NumCtxOption, appConfig?.NumCtx);
+        var repeatLastN = ResolveOptionValue(bindingContext, modelOptions.RepeatLastNOption, appConfig?.RepeatLastN);
+        var repeatPenalty = ResolveOptionValue(bindingContext, modelOptions.RepeatPenaltyOption, appConfig?.RepeatPenalty);
+        var temperature = ResolveOptionValue(bindingContext, modelOptions.TemperatureOption, appConfig?.Temperature);
+        var seed = ResolveOptionValue(bindingContext, modelOptions.SeedOption, appConfig?.Seed);
+#pragma warning disable CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
+        var stop = ResolveOptionValue(bindingContext, modelOptions.StopOption, appConfig?.Stop);
+#pragma warning restore CS8634
+        var tfsZ = ResolveOptionValue(bindingContext, modelOptions.TfsZOption, appConfig?.TfsZ);
+        var numPredict = ResolveOptionValue(bindingContext, modelOptions.NumPredictOption, appConfig?.NumPredict);
+        var topK = ResolveOptionValue(bindingContext, modelOptions.TopKOption, appConfig?.TopK);
+        var topP = ResolveOptionValue(bindingContext, modelOptions.TopPOption, appConfig?.TopP);
 
         ollama.Request.Options = new RequestOptions()
         {
@@ -63,5 +71,31 @@ public class CommitGenBinder(PrimaryOptions primaryOptions, ModelOptions modelOp
         };
 
         return new CommitGenService(git, ollama);
+    }
+
+    private T ResolveOptionValue<T>(BindingContext ctx, Option<T> opt, T? configVal) where T : struct
+    {
+        var optResult = ctx.ParseResult.FindResultFor(opt);
+        var optValue = ctx.ParseResult.GetValueForOption(opt)!;
+
+        if (optResult != null && !optResult.IsImplicit)
+            return optValue;
+        if (configVal.HasValue)
+            return configVal.Value;
+
+        return optValue;
+    }
+
+    private T ResolveOptionValue<T>(BindingContext ctx, Option<T> opt, T? configVal) where T : class
+    {
+        var optResult = ctx.ParseResult.FindResultFor(opt);
+        var optValue = ctx.ParseResult.GetValueForOption(opt)!;
+
+        if (optResult != null && !optResult.IsImplicit)
+            return optValue;
+        if (configVal != null)
+            return configVal;
+
+        return optValue;
     }
 }

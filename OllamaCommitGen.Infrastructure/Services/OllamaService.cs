@@ -1,5 +1,5 @@
 using System.Text;
-using OllamaCommitGen.Domain.Interfaces;
+using OllamaCommitGen.Domain.Abstractions;
 using OllamaSharp;
 using OllamaSharp.Models;
 

@@ -38,7 +38,7 @@ public static class CommandExtensions
             description: "Specifies an Ollama model to be used",
             alias: "-m",
             arity: ArgumentArity.ExactlyOne,
-            defaultValue: "llama3"
+            defaultValue: "codellama"
         );
 
         var langOption = command.AddOption<string>(
@@ -65,13 +65,22 @@ public static class CommandExtensions
             defaultValue: false
         );
 
+        var configOption = command.AddOption<string>(
+            name: "--config",
+            description: "Specifies configuration file. JSON format is supported",
+            alias: "-c",
+            arity: ArgumentArity.ExactlyOne,
+            defaultValue: null
+        );
+
         return new PrimaryOptions()
         {
             OriginOption = originOption,
             ModelOption = modelOption,
             LangOption = langOption,
             KeepAliveOption = keepaliveOption,
-            NoStreamOption = noStreamOption
+            NoStreamOption = noStreamOption,
+            ConfigOption = configOption
         };
     }
 

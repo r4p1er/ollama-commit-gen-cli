@@ -1,6 +1,6 @@
 using LibGit2Sharp;
 
-namespace OllamaCommitGen.Domain.Interfaces;
+namespace OllamaCommitGen.Domain.Abstractions;
 
 public interface IGitService : IDisposable
 {

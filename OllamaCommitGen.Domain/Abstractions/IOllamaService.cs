@@ -1,6 +1,6 @@
 using OllamaSharp.Models;
 
-namespace OllamaCommitGen.Domain.Interfaces;
+namespace OllamaCommitGen.Domain.Abstractions;
 
 public interface IOllamaService
 {
