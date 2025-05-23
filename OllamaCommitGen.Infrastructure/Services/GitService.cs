@@ -1,6 +1,6 @@
 using System.Text;
 using LibGit2Sharp;
-using OllamaCommitGen.Domain.Interfaces;
+using OllamaCommitGen.Domain.Abstractions;
 
 namespace OllamaCommitGen.Infrastructure.Services;
 

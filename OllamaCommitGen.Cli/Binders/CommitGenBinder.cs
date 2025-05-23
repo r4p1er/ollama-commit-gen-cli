@@ -1,7 +1,7 @@
 using System.CommandLine.Binding;
 using Iso639;
 using OllamaCommitGen.Cli.Models;
-using OllamaCommitGen.Domain.Interfaces;
+using OllamaCommitGen.Domain.Abstractions;
 using OllamaCommitGen.Domain.Services;
 using OllamaCommitGen.Infrastructure.Services;
 using OllamaSharp.Models;
