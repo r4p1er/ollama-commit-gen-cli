@@ -62,6 +62,7 @@ By default, the tool will:
 2. Send the diff to your local Ollama model
 3. Generate a commit message according to your preferred style/language
 4. Display the result in your terminal (optionally allowing edits)
+5. Make commit with the generated message
 
 ### Options and Configuration
 
